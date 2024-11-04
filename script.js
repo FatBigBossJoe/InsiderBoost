@@ -11,8 +11,9 @@ async function generatePlan() {
     outputDiv.innerHTML = "Generating marketing plan...";
 
     try {
-        // Call Hugging Face API
-        const response = await fetch("https://api-inference.huggingface.co/models/gpt2", {
+        // Specify the model name you are using
+        const modelName = "gpt2"; // Update this to your model name if necessary
+        const response = await fetch(`https://api-inference.huggingface.co/models/${modelName}`, {
             method: "POST",
             headers: {
                 Authorization: "Bearer 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", // Your API token
@@ -32,7 +33,7 @@ async function generatePlan() {
         console.log(data);
 
         // Check if generated_text exists
-        if (data && data[0] && data[0].generated_text) {
+        if (data && Array.isArray(data) && data[0] && data[0].generated_text) {
             outputDiv.innerHTML = data[0].generated_text;
         } else {
             outputDiv.innerHTML = "No marketing plan generated or response structure changed.";
