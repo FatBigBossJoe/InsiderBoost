@@ -21,10 +21,22 @@ async function generatePlan() {
             body: JSON.stringify({ inputs: companyInfo })
         });
 
+        // Check if the response is OK
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
         const data = await response.json();
-        
-        // Display the generated text
-        outputDiv.innerHTML = data[0].generated_text || "No marketing plan generated.";
+
+        // Log the data for debugging
+        console.log(data);
+
+        // Check if generated_text exists
+        if (data && data[0] && data[0].generated_text) {
+            outputDiv.innerHTML = data[0].generated_text;
+        } else {
+            outputDiv.innerHTML = "No marketing plan generated or response structure changed.";
+        }
     } catch (error) {
         console.error("Error generating plan:", error);
         outputDiv.innerHTML = "An error occurred: " + error.message;
